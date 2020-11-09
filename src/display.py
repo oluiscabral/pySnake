@@ -41,6 +41,21 @@ class Display:
             for content in self.contents:
                 content.K_KP_ENTER()
 
+    def L_CLICK(self, mouse_x: int, mouse_y: int):
+        if self.__active:
+            for content in self.contents:
+                content.L_CLICK(mouse_x, mouse_y)
+
+    def M_CLICK(self, mouse_x: int, mouse_y: int):
+        if self.__active:
+            for content in self.contents:
+                content.M_CLICK(mouse_x, mouse_y)
+
+    def R_CLICK(self, mouse_x: int, mouse_y: int):
+        if self.__active:
+            for content in self.contents:
+                content.M_CLICK(mouse_x, mouse_y)
+
 
 class Content(Display):
     def __init__(self, screen: pygame.surface.Surface):
@@ -69,6 +84,15 @@ class Content(Display):
         pass
 
     def K_KP_ENTER(self):
+        pass
+
+    def L_CLICK(self, mouse_x: int, mouse_y: int):
+        pass
+
+    def M_CLICK(self, mouse_x: int, mouse_y: int):
+        pass
+
+    def R_CLICK(self, mouse_x: int, mouse_y: int):
         pass
 
 

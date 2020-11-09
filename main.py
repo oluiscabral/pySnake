@@ -5,6 +5,7 @@ from src.display import MainDisplay
 pygame.init()
 screen = pygame.display.set_mode([300, 300])
 display = MainDisplay(screen)
+mouse = {}
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -19,6 +20,21 @@ while True:
         display.K_RIGHT()
     if key_input[pygame.K_DOWN]:
         display.K_DOWN()
+    if key_input[pygame.K_SPACE]:
+        display.K_SPACE()
+    if key_input[pygame.K_KP_ENTER]:
+        display.K_KP_ENTER()
+
+    mouse['x'], mouse['y'] = pygame.mouse.get_pos()
+    mouse['L_CLICK'], mouse['M_CLICK'], mouse['R_CLICK'] = pygame.mouse.get_pressed(
+        num_buttons=3)
+
+    if mouse['L_CLICK']:
+        display.L_CLICK(mouse['x'], mouse['y'])
+    if mouse['M_CLICK']:
+        display.M_CLICK(mouse['x'], mouse['y'])
+    if mouse['R_CLICK']:
+        display.R_CLICK(mouse['x'], mouse['y'])
 
     screen.fill([0, 0, 0])
     display.draw()
