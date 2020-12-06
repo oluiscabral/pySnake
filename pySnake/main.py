@@ -1,11 +1,19 @@
 import pygame
 import sys
-from src.display import MainDisplay
+from pySnake.displays.main_display import MainDisplay
+import time
+from pySnake.config import GeneralConfig
+
 
 pygame.init()
-screen = pygame.display.set_mode([300, 300])
-display = MainDisplay(screen)
+target_fps = 60
+screen = pygame.display.set_mode([500, 500])
+config = GeneralConfig(screen, target_fps)
+display = MainDisplay(config)
 mouse = {}
+
+target_fps = config.get_target_fps()
+prev_time = time.time()
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -25,17 +33,24 @@ while True:
     if key_input[pygame.K_KP_ENTER]:
         display.K_KP_ENTER()
 
-    mouse['x'], mouse['y'] = pygame.mouse.get_pos()
+    mouse['pos'] = pygame.mouse.get_pos()
     mouse['L_CLICK'], mouse['M_CLICK'], mouse['R_CLICK'] = pygame.mouse.get_pressed(
         num_buttons=3)
 
     if mouse['L_CLICK']:
-        display.L_CLICK(mouse['x'], mouse['y'])
+        display.L_CLICK(mouse['pos'][0], mouse['pos'][1])
     if mouse['M_CLICK']:
-        display.M_CLICK(mouse['x'], mouse['y'])
+        display.M_CLICK(mouse['pos'][0], mouse['pos'][1])
     if mouse['R_CLICK']:
-        display.R_CLICK(mouse['x'], mouse['y'])
-
+        display.R_CLICK(mouse['pos'][0], mouse['pos'][1])
+    
+    curr_time = time.time()
+    diff = curr_time - prev_time
+    delay = max(1.0/target_fps - diff, 0)
+    time.sleep(delay)
+    fps = 1.0/(delay + diff)
+    prev_time = curr_time
+    
     screen.fill([0, 0, 0])
-    display.draw()
+    display.update(mouse['pos'])
     pygame.display.flip()
